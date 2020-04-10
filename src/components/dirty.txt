@@ -1,0 +1,7 @@
+<ReactBingmaps
+                bingmapKey="ApWTHGjkpi0zS43VC__qPzzoSlEA-hLb6Ci0y1a6ehEy37hMH4WwMvyiBcmdksdH"
+                center={getCenter(marks)}
+                zoom={context.zoom}
+                infoboxesWithPushPins={marks}
+                style={{ flex: 1, minHeight: 300, minWidth: 300 }}
+              />
