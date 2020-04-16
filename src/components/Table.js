@@ -7,12 +7,14 @@ import {
   GeneralContext
 } from "./utils";
 import { types } from "./Constantes";
-import { strings } from "../assets/labels";
 import Card from './Card'
+import { getStrings } from "../assets/labels";
 
 export default function Table() {
+
   const { context } = useContext(GeneralContext);
   const [tab, setTab] = useState({ cols: [], data: [] });
+  const strings = getStrings(context.ar)
 
   useEffect(() => {
     switch (context.entity) {

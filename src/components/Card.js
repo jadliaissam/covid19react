@@ -1,14 +1,13 @@
-import React, { useState, useContext } from 'react'
-import { GeneralContext } from './utils'
+import React, { useContext } from 'react'
+import { ThemeContext } from './utils'
 
 export default function Card({label, children, styleC, styleH, styleB}){
-    const [state, setstate] = useState({})
-    const {context, setContext} = useContext(GeneralContext)
+    const {themcon} = useContext(ThemeContext)
 
-    const style = context.dark ? styles.modes.dark : styles.modes.light
+    const style = themcon ? styles.modes.dark : styles.modes.light
 
     return (
-        <div className="card shadow d-flex justify-content-start m-2" style={{...styles.card, ...style.card,  ...styleC}} >
+        <div className="card shadow d-flex justify-content-start mt-4" style={{...styles.card, ...style.card,  ...styleC}} >
             <div className="card-header" style={{...styles.header, ...style.header, ...styleH}}>
                 {label}
             </div>
@@ -23,7 +22,7 @@ const styles = {
     card: {
         borderWidth: 3,
         borderRadius: 10,
-        minWidth: 370,
+        minWidth: 300,
         minHeight : 350
     },
     header: {
@@ -50,11 +49,11 @@ const styles = {
 
         light: {
             header : {
-                backgroundColor: "black",
+                backgroundColor: "goldenrod",
                 color: "white",
             },
             card : {
-                borderColor: 'black',
+                borderColor: 'goldenrod',
                 backgroundColor : 'white',
                 color : 'black'
            },

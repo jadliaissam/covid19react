@@ -1,6 +1,8 @@
 import React, { createContext } from "react";
 
 export let GeneralContext = createContext();
+export let ThemeContext = createContext();
+export let LangContext = createContext();
 
 export const state_ref = React.createRef(null);
 export const town_ref = React.createRef(null);
@@ -41,8 +43,8 @@ export const towns_column = all_columns.slice(2, 8);
 export const districts_column = all_columns.slice(3, 8);
 
 
-export function getCenter(data){
-    if(!data || data.length === 0 ) return [33, -7]
+export function getCenter(data, entityCode = 0){
+  if(data === null || data.length === 0) return [31, -9.58]
     var num_coords = data.length;
     var X = 0.0;
     var Y = 0.0;

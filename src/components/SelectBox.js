@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
-import { GeneralContext } from "./utils";
+import { ThemeContext, LangContext } from "./utils";
 
 export default function SelectBox({ data, label, defaultVal, entityCode, changeHandler, refer }) {
-    const {context, setContext} = useContext(GeneralContext)
+    const { themcon } = useContext(ThemeContext)
+    const { langcon } = useContext(LangContext)
 
-    const style = context.dark ? styles.modes.dark : styles.modes.light
+    const style = themcon ? styles.modes.dark : styles.modes.light
     return (
         <>
-            <div className="d-flex  m-4" style={{textAlign: "start" }}>
+            <div className="d-flex  m-4" style={{ textAlign: "start" }}>
                 <label className="control-label col-md-4" htmlFor="selectbasic">
                     {label}
                 </label>
@@ -24,7 +25,7 @@ export default function SelectBox({ data, label, defaultVal, entityCode, changeH
                         {data
                             ? data.map((elt, index) => (
                                 <option key={index} value={elt.id}>
-                                    {elt.name}
+                                    {langcon ? elt.name : elt.label}
                                 </option>
                             ))
                             : []}
@@ -38,15 +39,15 @@ export default function SelectBox({ data, label, defaultVal, entityCode, changeH
 
 const styles = {
     modes: {
-        dark : {
-            backgroundColor : 'black',
-            color : 'white'
-        
-          },
-        
-          light : {
-            backgroundColor : 'white',
-            color : 'black'
-          }
+        dark: {
+            backgroundColor: 'black',
+            color: 'white'
+
+        },
+
+        light: {
+            backgroundColor: 'white',
+            color: 'black'
+        }
     }
 }

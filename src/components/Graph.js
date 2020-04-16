@@ -1,66 +1,39 @@
 import React, { useState, useContext, useEffect } from "react";
-import Chart from "react-apexcharts";
-import { GeneralContext } from "./utils";
-import { strings, colors } from "../assets/labels";
+import ReactApexChart from "react-apexcharts";
+import { ThemeContext, LangContext, GeneralContext } from "./utils";
+import { colors, getStrings } from "../assets/labels";
 import Card from './Card'
 export default function Graph() {
+  const { themcon } = useContext(ThemeContext);
+  const { langcon } = useContext(LangContext);
   const { context } = useContext(GeneralContext);
+  const strings = getStrings(langcon)
+  const mode = themcon ? 'dark' : 'light'
   const [state, setState] = useState({
     options: {
-      theme: { mode: context.dark ? 'dark' : 'light' },
-      chart: {
-        id: "apexchart-example",
-        stacked: true,
-        fontFamily : 'El Messiri'
-      },
-      xaxis: { categories: [] }
-    },
+      chart: { id: "apexchart-example", stacked: true, fontFamily: 'El Messiri' },
+      xaxis: { categories: [] } },
     series: []
   });
 
   useEffect(() => {
-    const names = context.markers.map(e => e.name);
+    const names = langcon ? context.markers.map(e => e.name) :  context.markers.map(e => e.label);
     const confirmed_values = context.markers.map(e => e.confirmed_count);
-    const suspected_values = context.markers.map(e => e.suspected_count);
-    const recovered_values = context.markers.map(e => e.recovered_count);
-    const dead_values = context.markers.map(e => e.dead_count);
     setState({
       options: {
         colors: [colors['warning'], colors['primary'], colors['danger'], colors['success']],
-        theme: { mode: context.dark ? 'dark' : 'light' },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            stacked: true,
-          }
-        },
-        legend: {
-          position: 'top',
-          horizontalAlign: 'center',
-        },
-        chart: {
-          id: "apexchart-example",
-          fontFamily : 'El Messiri',
-          background: context.dark ? 'black' : 'white'
+        theme: { mode } ,
+        plotOptions: { bar: { horizontal: false, stacked: true } },
+        legend: { markers : {offsetY : 15}, position: 'top', horizontalAlign: 'center', offsetY : 10, itemMargin : { vertical : 10 }},
+        chart: { id: "apexchart-example", fontFamily: 'El Messiri', background: themcon ? 'black' : 'white' },
+        xaxis: { categories: names,
+          labels: { rotate: langcon ? 90 : -90 }
         },
         responsive: [
-          {
-            breakpoint: 4096,
-            options: {
-              chart: {
-                width: '100%',
-                height: '100%'
-              },
-              labels: {
-                rotate: 90
-              }
-            }
-          },
           {
             breakpoint: 480,
             options: {
               chart: {
-                width: 350,
                 height: 500
               },
               labels: {
@@ -68,41 +41,24 @@ export default function Graph() {
               }
             }
           }],
-        xaxis: {
-          categories: names,
-          labels: {
-            rotate: 90
-          }
-        }
       },
       series: [
         {
           name: strings['confirmed_count'],
           data: confirmed_values
         },
-        {
-          name: strings['suspected_count'],
-          data: suspected_values
-        },
-        {
-          name: strings['dead_count'],
-          data: dead_values
-        },
-        {
-          name: strings['recovered_count'],
-          data: recovered_values
-        }
       ]
     });
-  }, [context.markers, context.dark]);
+  }, [context.markers, themcon, langcon]);
 
   return (
-    <Card label={strings['label_graph']} styleB={{minHeight:500}}>
-      <Chart
+    <Card label={strings['label_graph']} styleB={{ minHeight: 550, maxHeight: 600 }}>
+      <ReactApexChart
         options={state.options}
         series={state.series}
         type="bar"
-        style={{ height: '100%', width: '100%'}}
+        height={500}
+        style={{ height: '100%', width: '90%' }}
       />
     </Card>
   );
